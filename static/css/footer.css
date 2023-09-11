@@ -1,0 +1,13 @@
+/* Styles for the footer */
+footer {
+    margin-top: auto;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Style the footer rows */
+.footer-row {
+    margin: 5px 0;
+}

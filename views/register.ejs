@@ -1,0 +1,48 @@
+<body>
+    <header class="header">
+        <h1>Register</h1>
+    </header>
+
+    <div class="container">
+        <form action="/register" method="POST">
+            <label for="username">Username (Greek characters only):</label>
+            <input type="text" id="username" name="username" pattern="[Α-Ωα-ωάέήίϊΐόύϋΰώ]+" required>
+            <br>
+    
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <br>
+    
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" rows="4" required></textarea>
+            <br>
+    
+            <label for="country">Country:</label>
+            <select id="country" name="country" required>
+                <option value="" disabled selected>Select your country</option>
+                <!-- Add options for all countries here -->
+                <option value="Greece">Greece</option>
+                <!-- Add more countries as needed -->
+            </select>
+            <br>
+    
+            <label for="telephone">Telephone:</label>
+            <input type="tel" id="telephone" name="telephone" required>
+            <br>
+    
+            <label for="creditCard">Credit Card:</label>
+            <input type="text" id="creditCard" name="creditCard" required>
+            <br>
+    
+            <label for="cardType">Card Type:</label>
+            <select id="cardType" name="cardType" required>
+                <option value="" disabled selected>Select card type</option>
+                <option value="Visa">Visa</option>
+                <option value="Mastercard">Mastercard</option>
+            </select>
+            <br>
+    
+            <input type="submit" value="Register">
+        </form>
+    </div>
+</body>

@@ -1,12 +1,11 @@
-const express = require("express");
-const expressLayouts = require("express-ejs-layouts");
-
 if (process.env.NODE_ENV !== 'production')
 {
     require('dotenv').config();
 }
 
-const indexRouter = require("./routes/index");
+const express = require("express");
+const expressLayouts = require("express-ejs-layouts");
+const mysql = require("mysql");
 
 const app = express();
 
@@ -16,9 +15,10 @@ app.set('view engine', 'ejs'); // Set EJS as the view engine
 app.set('views', __dirname + '/views'); // Set the views directory
 app.set('layout', 'layout');
 app.use(expressLayouts);
-app.use(express.static('public'));
+app.use(express.static('static'));
 
-const mysql = require("mysql");
+const indexRouter = require("./routes/index");
+app.use("/", indexRouter);
 
 // Create a MySQL database connection
 const db = mysql.createConnection({
@@ -36,11 +36,6 @@ const db = mysql.createConnection({
     }
     console.log('Connected to MySQL as threadId: ' + db.threadId);
   });
-
-
-
-app.use("/", indexRouter);
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);

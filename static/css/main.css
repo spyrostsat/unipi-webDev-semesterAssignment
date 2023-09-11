@@ -1,0 +1,43 @@
+@import url(variables.css);
+@import url(nav.css);
+@import url(footer.css);
+@import url(author.css);
+
+/* Reset some default styles for the page */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.header {
+    margin-top: 1rem;
+    background-color: var(--bg-color-2);
+    color: var(--text-color);
+    text-align: center;
+    padding: 20px 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0.8rem auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-5 {
+    margin-top: 3rem;
+}
+
+.author-anchor {
+    text-decoration: none;
+    color: var(--text-color-hover);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
