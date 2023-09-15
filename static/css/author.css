@@ -14,10 +14,21 @@
     height: auto;
 }
 
+.author img:hover {
+    cursor: pointer;
+}
+
 .author h2 {
     margin-top: 0;
 }
 
 .author p {
     margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .author img {
+        max-width: 50%;
+        height: auto;
+    }
 }

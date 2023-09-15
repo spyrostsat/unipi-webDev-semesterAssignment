@@ -1,0 +1,84 @@
+.classic-form {
+    width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    border: none;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.text-field, .select-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.select-field {
+    appearance: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .classic-form {
+        max-width: 100%;
+    }
+}
+
+.buttons-flex-container {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+
+.form-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+    background-color: #0056b3;
+}
+
+.form-title {
+    font-weight: bolder;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 2rem;
+}
+
+@media print {
+    .header {
+        background-color: var(--bg-color);
+       }
+    .print-hide {
+        display: none;
+    }
+}
+
+.mb-5 {
+    margin-bottom: 5rem;
+}

@@ -3,7 +3,10 @@
 @import url(footer.css);
 @import url(author.css);
 
-/* Reset some default styles for the page */
+* {
+    box-sizing: border-box;
+  }
+
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     min-height: 100vh;
