@@ -36,3 +36,9 @@
 .nav-links a:hover {
     color: var(--text-color-hover); /* Change the color on hover */
 }
+
+@media (max-width: 500px) {
+    .nav-img {
+        display: none;
+    }
+}

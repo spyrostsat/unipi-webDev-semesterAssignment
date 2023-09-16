@@ -1,3 +1,35 @@
+.msg-container {
+    position: relative;
+}
+  
+.msg-content {
+    border: 1px solid #ccc;
+    color: black;
+    font-weight: 500;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#msg-close {
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    background-color: #aaaaaa;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#msg-close:hover {
+    background-color: #888888;
+}
+
+.msg-content p {
+    text-align: center;
+}
+
 .classic-form {
     width: 600px;
     margin: 20px auto;
@@ -74,6 +106,7 @@
     .header {
         background-color: var(--bg-color);
        }
+    
     .print-hide {
         display: none;
     }

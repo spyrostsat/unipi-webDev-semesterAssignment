@@ -1,68 +1,80 @@
 <body>
     <link rel="stylesheet" type="text/css" href="css/form.css">
-
+    
     <header class="header">
         <h1>Register</h1>
     </header>
 
+    <!-- Section for pop-up message regarding the form -->
+    <% if (locals.msg) { %>
+        <div class="msg-container print-hide">
+            <div id="msg-div" class="msg-content">
+                <!-- The p tag with id msg-category is not to be displayed in html, I use it to pass the 'danger' or 'success' message to the front end and use it with JS to change the bg-color of the msg -->
+                <p id="msg_category" style="display: none;"><%=locals.msg_category%></p>
+                <p id="msg-text"><%=(locals.msg)%></p>
+                <button id="msg-close">X</button>
+            </div>
+        </div>
+    <% } %>
+
     <form class="classic-form" id="myForm" method="POST">
         <div class="form-group">
             <label class="label" for="username">Username:</label>
-            <input class="text-field" type="text" id="username" name="username" required value="<% if (locals.searched_user) { %><%= locals.searched_user.username %><% } %>">    
+            <input class="text-field" type="text" id="username" name="username" required value="<% if (locals.current_user) { %><%= locals.current_user.username %><% } %>">    
         </div>
 
         <div class="form-group">
             <label class="label" for="email">Email:</label>
-            <input class="text-field" type="email" id="email" name="email" required value="<% if (locals.searched_user) { %><%= locals.searched_user.email %><% } %>">
+            <input class="text-field" type="email" id="email" name="email" required value="<% if (locals.current_user) { %><%= locals.current_user.email %><% } %>">
         </div>
         
         <div class="form-group">
             <label class="label" for="address">Address:</label>
-            <input class="text-field" type="text" id="address" name="address" required value="<% if (locals.searched_user) { %><%= locals.searched_user.address %><% } %>">
+            <input class="text-field" type="text" id="address" name="address" required value="<% if (locals.current_user) { %><%= locals.current_user.address %><% } %>">
         </div>
 
         <div class="form-group">
             <label class="label" for="country">Country:</label>
             <select class="select-field" id="country" name="country" required>
                 <option value="" selected disabled>Select your country</option>
-                <option value="Greece" <% if (locals.searched_user) { %> <% if (locals.searched_user.country === "Greece") { %> selected <% }} %> >Greece</option>
-                <option value="Other" <% if (locals.searched_user) { %> <% if (locals.searched_user.country === "Other") { %> selected <% }} %> >Other</option>
+                <option value="Greece" <% if (locals.current_user) { %> <% if (locals.current_user.country === "Greece") { %> selected <% }} %> >Greece</option>
+                <option value="Other" <% if (locals.current_user) { %> <% if (locals.current_user.country === "Other") { %> selected <% }} %> >Other</option>
             </select>
         </div>
 
         <div class="form-group">
             <label class="label" for="zipCode">Zip code:</label>
-            <input class="text-field" type="text" id="zipCode" name="zipCode" required value="<% if (locals.searched_user) { %><%= locals.searched_user.zip_code %><% } %>">
+            <input class="text-field" type="text" id="zipCode" name="zipCode" required value="<% if (locals.current_user) { %><%= locals.current_user.zip_code %><% } %>">
         </div>
 
         <div class="form-group">
             <label class="label" for="telephone">Telephone:</label>
-            <input class="text-field" type="tel" id="telephone" name="telephone" required value="<% if (locals.searched_user) { %><%= locals.searched_user.phone %><% } %>">
+            <input class="text-field" type="tel" id="telephone" name="telephone" required value="<% if (locals.current_user) { %><%= locals.current_user.phone %><% } %>">
         </div>
 
         <div class="form-group">
-            <label class="label print-hide" for="creditCard">Credit Card:</label>
-            <input class="text-field print-hide" type="text" id="creditCard" name="creditCard" required value="<% if (locals.searched_user) { %><%= locals.searched_user.card_number %><% } %>">
+            <label class="label print-hide" for="creditCard">Credit card:</label>
+            <input class="text-field print-hide" type="text" id="creditCard" name="creditCard" required value="<% if (locals.current_user) { %><%= locals.current_user.card_number %><% } %>">
         </div>
 
         <div class="form-group">
-            <label class="label print-hide" for="cardType">Card Type:</label>
+            <label class="label print-hide" for="cardType">Card type:</label>
             <select class="select-field print-hide" id="cardType" name="cardType" required>
                 <option value="" selected disabled>Select card type</option>
-                <option value="Visa" <% if (locals.searched_user) { %> <% if (locals.searched_user.card_type === "Visa") { %> selected <% }} %> >Visa</option>
-                <option value="Mastercard" <% if (locals.searched_user) { %> <% if (locals.searched_user.card_type === "Mastercard") { %> selected <% }} %> >Mastercard</option>
-                <option value="Other" <% if (locals.searched_user) { %> <% if (locals.searched_user.card_type === "Other") { %> selected <% }} %> >Other</option>
+                <option value="Visa" <% if (locals.current_user) { %> <% if (locals.current_user.card_type === "Visa") { %> selected <% }} %> >Visa</option>
+                <option value="Mastercard" <% if (locals.current_user) { %> <% if (locals.current_user.card_type === "Mastercard") { %> selected <% }} %> >Mastercard</option>
+                <option value="Other" <% if (locals.current_user) { %> <% if (locals.current_user.card_type === "Other") { %> selected <% }} %> >Other</option>
             </select>
         </div>        
 
         <div class="buttons-flex-container">
-            <input class="form-button" type="button" value="Clear" onclick="clearFormById('myForm')">
-            <input class="form-button" type="button" value="Print" onclick="printFormById('myForm')">
+            <input class="form-button print-hide" type="button" value="Clear" onclick="clearFormById('myForm')">
+            <input class="form-button print-hide" type="button" value="Print" onclick="printFormById('myForm')">
         </div>
 
         <div class="buttons-flex-container">
-            <input class="form-button" type="submit"  formaction="/register" value="Register New User">
-            <input class="form-button" type="submit"  formaction="/register/update-user" value="Update Existing User">
+            <input class="form-button print-hide" type="submit"  formaction="/register" value="Register New User">
+            <input class="form-button print-hide" type="submit"  formaction="/register/update-user" value="Update Existing User">
         </div>
     </form>
 
@@ -81,5 +93,4 @@
     </form>
 
     <script src="js/form_utils.js"></script>
-
 </body>

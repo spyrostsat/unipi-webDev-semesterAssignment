@@ -28,7 +28,28 @@
 
 @media (max-width: 768px) {
     .author img {
-        max-width: 50%;
+        max-width: 40%;
         height: auto;
     }
+}
+
+@media (max-width: 1000px) {
+    .author img {
+        max-width: 30%;
+        height: auto;
+    }
+}
+
+.author-text {
+    text-align: justify;
+}
+
+@media (min-width: 769px) {
+    .author-text {
+        max-width: 70%;
+    }
+}
+
+#queen-of-mystery {
+    text-align: center;
 }

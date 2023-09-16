@@ -1,18 +1,26 @@
 <body>
+    <link rel="stylesheet" type="text/css" href="css/home_table.css">
+
     <header class="header">
         <h1>Top 5 Authors</h1>
     </header>
     
-    <div class="author">
-        <img id="cristieImg" src="images/agatha_cristie.jpeg" alt="Agatha Cristie">
-        <h2><a class="author-anchor" href="/cristie">Agatha Cristie</a></h2>
-        <p>Dame Agatha Mary Clarissa Christie, Lady Mallowan, DBE was an English writer known for her 66 detective novels and 14 short story collections, particularly those revolving around fictional detectives Hercule Poirot and Miss Marple.</p>
+    <div class="sliding-container">
+        <div class="sliding-div">
+            <p>On this website, you can delve into the biographies of <del>NOT 4</del> 5 literary legends, explore their most famous works, and gain insights into the historical and cultural contexts that shaped their creations.</p>
+        </div>
     </div>
 
     <div class="author">
         <img id="dickensImg" src="images/charles_dickens.jpeg" alt="Charles Dickens">
         <h2><a class="author-anchor" href="/dickens">Charles Dickens</a></h2>
         <p>Charles John Huffam Dickens was an English novelist and social critic who created some of the world's best-known fictional characters, and is regarded by many as the greatest novelist of the Victorian era.</p>
+    </div>
+
+    <div class="author">
+        <img id="cristieImg" src="images/agatha_cristie.jpeg" alt="Agatha Cristie">
+        <h2><a class="author-anchor" href="/cristie">Agatha Cristie</a></h2>
+        <p>Dame Agatha Mary Clarissa Christie, Lady Mallowan, DBE was an English writer known for her 66 detective novels and 14 short story collections, particularly those revolving around fictional detectives Hercule Poirot and Miss Marple.</p>
     </div>
 
     <div class="author">
@@ -32,6 +40,37 @@
         <h2><a class="author-anchor" href="/king">Stephen King</a></h2>
         <p>Stephen Edwin King is an American author of horror, supernatural fiction, suspense, crime, science-fiction, and fantasy novels. Described as the "King of Horror", his books have sold more than 350 million copies as of 2006, and many have been adapted into films, television series, miniseries, and comic books.</p>
     </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th>Number of Books</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Charles Dickens</td>
+                <td>34</td>
+            </tr>
+            <tr>
+                <td>Agatha Christie</td>
+                <td>66</td>
+            </tr>
+            <tr>
+                <td>Danielle Steel</td>
+                <td>179</td>
+            </tr>
+            <tr>
+                <td>J.K. Rowling</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>Stephen King</td>
+                <td>61</td>
+            </tr>
+        </tbody>
+    </table>
 
     <script src="js/redirect_authors.js"></script>
 </body>

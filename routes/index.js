@@ -68,21 +68,15 @@ router.get('/steel', (req, res) => {
 });
 
 router.get('/register', (req, res) => {
-    let searched_user = null;
-    searching_email = req.query.searching_email;
-    const get_user_command = `SELECT * FROM users WHERE email = "${searching_email}";`;
-    queryDatabase(get_user_command)
-    .then(result => {
-        for (let row of result) searched_user = { ...row }; // there is only one row max, since emails uniquely identify users
-        res.render('register', {title: "Register Page", searched_user: searched_user});  
-    })
-    .catch(err => {
-        console.log(err);
-        res.render('register', {title: "Register Page"});
-    });
+    let msg = req.query.msg;
+    let msg_category = req.query.msg_category;
+    let serialized_current_user = req.query.current_user;
+    let current_user = null;
+    if (serialized_current_user !== undefined) current_user = JSON.parse(decodeURIComponent(serialized_current_user));
+    res.render('register', {title: "Register Page", current_user, msg, msg_category});
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
     let username = req.body.username;
     let email = req.body.email;
     let address = req.body.address;
@@ -105,18 +99,43 @@ router.post('/register', (req, res) => {
 
     if (!valid_entry)
     {
-        console.log("Invalid entry. Please check your form and resubmit.")
-        res.redirect('/register');
+        let msg = "";
+
+        let current_user = { // we collect the submitted-form data in the current_user Object to feed it back to the /register get route and from there back to the front-end
+            username: username,
+            email: email,
+            address: address,
+            country: country,
+            zip_code: zipCode,
+            phone: telephone,
+            card_number: creditCard,
+            card_type: cardType
+        }
+
+        if (!valid_username) msg += "Username: Only greek characters are allowed.";
+        if (!valid_address) msg += "Address: Only greek characters are allowed.";
+        if (!validZipCode) msg += "Zip code: Only numbers with up to 5 digits are allowed.";
+        if (!validPhone) msg += "Telephone: Only the form '+30210xxxxxxx' is allowed.";
+        if (!validCreditCard) msg += "Credit Card: Only numbers with 16 digits are allowed.";
+
+        msg += "Please check your form and resubmit. Register was not completed.";
+        
+        let serialized_current_user = JSON.stringify(current_user);
+        
+        res.redirect(`/register?current_user=${encodeURIComponent(serialized_current_user)}&msg=${msg}&msg_category=danger`);
     }
     else
     {
-        // Check that the new row has a new email, which is the field that uniquely intentifies users
-        let unique_email = true;
-
-        queryDatabase(`SELECT email from users;`)
-        .then(results =>
+        try
         {
-            for (let row of results) {
+            // Check that the new row has a new email, which is the field that uniquely intentifies users
+            let unique_email = true;
+
+            results = await queryDatabase(`SELECT email from users;`);
+            let msg;
+            let msg_category;
+            for (let row of results)
+            {
                 if (row.email === email) {
                     unique_email = false;
                     break;
@@ -125,30 +144,60 @@ router.post('/register', (req, res) => {
             if (unique_email)
             {
                 const insert_row = `INSERT INTO users (username, email, address, country, zip_code, phone, card_number, card_type)
-                VALUES ("${username}", "${email}", "${address}", "${country}", "${zipCode}", "${telephone}", ${creditCard}, "${cardType}");`
+                VALUES ("${username}", "${email}", "${address}", "${country}", ${zipCode}, "${telephone}", ${creditCard}, "${cardType}");`
                 
-                return queryDatabase(insert_row);
+                results = await queryDatabase(insert_row);
+                console.log(`User with email "${email}" was inserted to the db.`);
+                msg = `User with email "${email}" was inserted to the db.`;
+                msg_category = 'success';
             }
             else
             {
-                return new Promise((resolve, reject) => {
-                    reject(`User with email "${email}" already exists.`);
-                });
+                console.log(`User with email "${email}" already exists.`);
+                msg = `User with email "${email}" already exists.`;
+                msg_category = 'danger';
             }
-        })
-        .then(new_results => console.log(`User with email "${email}" was inserted to the db.`))
-        .catch(err => console.log(err));
-
-        res.redirect('/register');
+            res.redirect(`/register?msg=${msg}&msg_category=${msg_category}`);
+        }
+        catch (err)
+        {
+            console.log(err);
+            res.redirect('/register');
+        }
     }
 });
 
-router.post('/register/search-by-email', (req, res) => {
+router.post('/register/search-by-email', async (req, res) => {
     searching_email = req.body.searchEmail;
-    res.redirect('/register?searching_email=' + searching_email);
+    let current_user = null;
+    const get_user_command = `SELECT * FROM users WHERE email = "${searching_email}";`;
+    let msg;
+    let msg_category;
+    try {
+        result = await queryDatabase(get_user_command);
+        for (let row of result) current_user = { ...row }; // there is only one row max, since emails uniquely identify users
+        if (current_user)
+        {
+            msg = `User with email "${searching_email}" was found in the db.`;
+            msg_category = 'success';
+        }
+        else
+        {
+            msg = `User with email "${searching_email}" was not found in the db.`;
+            msg_category = 'danger';
+        }
+
+        serialized_current_user = JSON.stringify(current_user);
+        res.redirect(`/register?current_user=${encodeURIComponent(serialized_current_user)}&msg=${msg}&msg_category=${msg_category}`);
+    }
+    catch (err) {
+        console.log(err);
+        res.redirect('/register');
+    }
+
 });
 
-router.post('/register/update-user', (req, res) => {
+router.post('/register/update-user', async (req, res) => {
     let new_username = req.body.username;
     let existing_email = req.body.email;
     let new_address = req.body.address;
@@ -171,23 +220,54 @@ router.post('/register/update-user', (req, res) => {
 
     if (!valid_entry)
     {
-        console.log("Invalid entry. Please check your form and resubmit.")
-        res.redirect('/register');
+        let msg = "";
+
+        let current_user = { // we collect the submitted-form data in the current_user Object to feed it back to the /register get route and from there back to the front-end
+            username: new_username,
+            email: existing_email,
+            address: new_address,
+            country: new_country,
+            zip_code: new_zipCode,
+            phone: new_telephone,
+            card_number: new_creditCard,
+            card_type: new_cardType
+        }
+
+        if (!valid_username) msg += "Username: Only greek characters are allowed.";
+        if (!valid_address) msg += "Address: Only greek characters are allowed.";
+        if (!validZipCode) msg += "Zip code: Only numbers with up to 5 digits are allowed.";
+        if (!validPhone) msg += "Telephone: Only the form '+30210xxxxxxx' is allowed.";
+        if (!validCreditCard) msg += "Credit Card: Only numbers with 16 digits are allowed.";
+
+        msg += "Please check your form and resubmit. Update was not completed.";
+
+        let serialized_current_user = JSON.stringify(current_user);
+        res.redirect(`/register?current_user=${encodeURIComponent(serialized_current_user)}&msg=${msg}&msg_category=danger`);
     }
-    else
+    else // if the submitted form is valid, the request updates the database
     {
-        const update_user_command = `UPDATE users SET username = "${new_username}", address = "${new_address}", country = "${new_country}", zip_code = "${new_zipCode}", phone = "${new_telephone}", card_number = ${new_creditCard}, card_type = "${new_cardType}" WHERE email = "${existing_email}";`;
-
-        queryDatabase(update_user_command)
-        .then(result => {
+        const update_user_command = `UPDATE users SET username = "${new_username}", address = "${new_address}", country = "${new_country}", zip_code = ${new_zipCode}, phone = "${new_telephone}", card_number = ${new_creditCard}, card_type = "${new_cardType}" WHERE email = "${existing_email}";`;
+        try {
+            result = await queryDatabase(update_user_command);
             const user_found = result.affectedRows === 1;
-            console.log(`User with email "${existing_email}" was updated.`)
-        })
-        .catch(err => {
+            let msg;
+            let msg_category;
+            if (user_found)
+            {
+                msg = `User with email "${existing_email}" was updated.`
+                msg_category = 'success';
+            }
+            else
+            {
+                msg = `No user with email "${existing_email}" exists in the database.`
+                msg_category = 'danger';
+            }
+            res.redirect(`/register?msg=${msg}&msg_category=${msg_category}`);
+        }
+        catch (err) {
             console.log(err);
-        });
-
-        res.redirect('/register');
+            res.redirect('/register');
+        }
     }
 });
 
